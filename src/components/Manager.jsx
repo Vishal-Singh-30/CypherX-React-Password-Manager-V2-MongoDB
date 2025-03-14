@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react'
 import { useState, useRef } from 'react'
+import { ToastContainer, toast } from 'react-toastify';
+import { v4 as uuidv4 } from 'uuid';
 
 const Manager = () => {  // Manager component is Landing page
     const showpassRef = useRef();
@@ -39,8 +41,8 @@ const Manager = () => {  // Manager component is Landing page
 
     const savePassword = () => {
         console.log(form);
-        setPasswordArray([...passwordArray, form]); // add form data to passwordArray
-        localStorage.setItem("passwords", JSON.stringify([...passwordArray, form])); // store passwordArray in local storage
+        setPasswordArray([...passwordArray, {...form, id: uuidv4()}]); // add form data to passwordArray
+        localStorage.setItem("passwords", JSON.stringify([...passwordArray, {...form, id: uuidv4()}])); // store passwordArray in local storage
         // we are using [...passwordArray, form] instead of passwordArray
         //  because it takes time for setStateVaribel function to reflect its changes in react.
         setForm({
@@ -48,9 +50,45 @@ const Manager = () => {  // Manager component is Landing page
             username: "",
             password: ""
         });
-        console.log([...passwordArray, form]);
+        console.log([...passwordArray, {...form, id: uuidv4()}]);
 
     }
+
+
+    // event handler for delete password 
+    const deletePassword = (id) => {
+        toast.error('Password Deleted', {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: false,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+            });
+        let confirm_popup = confirm("Are you sure you want to delete this password?");
+        if(confirm_popup){
+            let filteredArray = passwordArray.filter(item => item.id !== id); // remove password from passwordArray
+            setPasswordArray(filteredArray); // update state
+            localStorage.setItem("passwords", JSON.stringify(filteredArray)); // store updated passwordArray in local storage
+        }
+        
+    }
+
+
+    // event handler for edit password
+    const editPassword = (id) => {
+        let targetPassword = passwordArray.find(item => item.id === id); // get password from passwordArray
+    setForm({
+        sitename: targetPassword.sitename,
+        username: targetPassword.username,
+        password: targetPassword.password
+    });
+    let filteredArray = passwordArray.filter(item => item.id !== id); // remove password from passwordArray
+    setPasswordArray(filteredArray); // update state and wait for user to press save button
+    }
+
 
     // function to handle form input changes
     const handleInputChange = (event) => {
@@ -64,7 +102,16 @@ const Manager = () => {  // Manager component is Landing page
 
     // function to handle copy text to clipboard
     const copyText = (text) => {
-        alert("Copied to clipboard");
+        toast.success('Copied To Clipboard!', {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+            });
         navigator.clipboard.writeText(text); // copy text to clipboard
     }
 
@@ -72,6 +119,23 @@ const Manager = () => {  // Manager component is Landing page
     return (
         // Background gradient code
         <>
+            {/* toastify here  */}
+            <ToastContainer
+            position="top-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick={false}
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="dark"
+            />
+
+
+
+
             <div className="relative min-h-screen">
                 <div className="absolute inset-0 -z-10 min-h-screen h-full w-full items-center px-5 py-24 [background:radial-gradient(125%_125%_at_50%_10%,#000_40%,#1F51FF_100%)]"></div>
 
@@ -110,7 +174,7 @@ const Manager = () => {  // Manager component is Landing page
                                 src="https://cdn.lordicon.com/jgnvfzqg.json"
                                 trigger="hover">
                             </lord-icon>
-                            Add Password
+                            Save Password
                         </button>
                     </div>
 
@@ -125,12 +189,13 @@ const Manager = () => {  // Manager component is Landing page
                                     <th className='py-2'>Site</th>
                                     <th className='py-2'>Username</th>
                                     <th className='py-2 text-[#1F51FF]'>Password</th>
+                                    <th className='py-2'>Actions</th>
                                 </tr>
                             </thead>
                             <tbody className='text-white bg-gray-900'>
                                 {passwordArray.map((item) => {
                                     return <>
-                                        <tr>
+                                        <tr >
                                             <td className='py-2 border border-black text-center'>
                                                 <div className='flex items-center justify-center'>
                                                     <a href={item.sitename} target='_blank'>{item.sitename}</a>
@@ -170,6 +235,26 @@ const Manager = () => {  // Manager component is Landing page
                                                         </lord-icon>
                                                         </div>
                                                     </div>
+                                            </td>
+                                            <td className='py-2 border border-black text-center text-white'>
+                                            <span onClick={() => editPassword(item.id)} className='cursor-pointer ml-2 mr-2'>
+                                                <lord-icon
+                                                    src="https://cdn.lordicon.com/gwlusjdu.json"
+                                                    trigger="hover"
+                                                    colors="primary:#ffffff"
+                                                    className='size-7 pt-1'
+                                                    >
+                                                </lord-icon>
+                                            </span>
+                                            <span onClick={() => deletePassword(item.id)} className='cursor-pointer ml-2 mr-2'>
+                                                <lord-icon
+                                                    src="https://cdn.lordicon.com/skkahier.json"
+                                                    trigger="hover"
+                                                    colors="primary:#ffffff"
+                                                    className='size-7 pt-1'
+                                                    >
+                                                </lord-icon>
+                                            </span>
                                             </td>
                                         </tr>
                                     </>
