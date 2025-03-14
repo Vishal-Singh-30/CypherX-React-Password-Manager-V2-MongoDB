@@ -14,12 +14,18 @@ const Navbar = () => {
             </div>
         
         <ul>
-            <li className='flex gap-4'>
-                <a className='hover:font-bold' href="#">Home</a>
-                <a className='hover:font-bold' href="#">About</a>
-                <a className='hover:font-bold' href="#">Contact</a>
+            <li className='flex gap-10'>
+                <a className='hover:scale-110' href="#">Home</a>
+                <a className='hover:scale-110' href="#">About</a>
+                <a className='hover:scale-110' href="#">Contact</a>
             </li>
         </ul>
+        <div className='ml-25'>
+            <a href="https://github.com/Vishal-Singh-30/React-Password-Manager" target="_blank">
+            <img className='w-10 hover:cursor-pointer hover:scale-110 transition-all duration-300' src="github_logo.png" alt="github_logo" />
+            </a>
+            
+        </div>
         </div>
     </nav>
   )
