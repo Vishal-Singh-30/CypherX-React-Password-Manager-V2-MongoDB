@@ -40,6 +40,16 @@ const Manager = () => {  // Manager component is Landing page
     }
 
     const savePassword = () => {
+        toast.success('Password Secured!', {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+            });
         console.log(form);
         setPasswordArray([...passwordArray, {...form, id: uuidv4()}]); // add form data to passwordArray
         localStorage.setItem("passwords", JSON.stringify([...passwordArray, {...form, id: uuidv4()}])); // store passwordArray in local storage
