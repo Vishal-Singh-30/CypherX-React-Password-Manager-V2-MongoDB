@@ -57,7 +57,7 @@ CypherX is a state-of-the-art password manager designed to keep your credentials
 
 5. Open your browser and navigate to `http://localhost:3000` to see the application in action.
 
-## Upselling Points
+## KEY POINTS
 
 - **Full-Stack Development**: Demonstrates proficiency in both frontend and backend development.
 - **Secure Data Handling**: Utilizes MongoDB for secure data storage with encryption, showcasing knowledge in database management and security best practices.
