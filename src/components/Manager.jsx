@@ -40,6 +40,7 @@ const Manager = () => {  // Manager component is Landing page
     }
 
     const savePassword = () => {
+        if(form.sitename.length > 3 && form.username.length > 3 && form.password.length > 3){
         toast.success('Password Secured!', {
             position: "top-right",
             autoClose: 3000,
@@ -61,6 +62,19 @@ const Manager = () => {  // Manager component is Landing page
             password: ""
         });
         console.log([...passwordArray, {...form, id: uuidv4()}]);
+
+    }else{
+        toast.error('Please enter valid details', {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: false,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+            });
+    }
 
     }
 
@@ -150,14 +164,14 @@ const Manager = () => {  // Manager component is Landing page
                 <div className="absolute inset-0 -z-10 min-h-screen h-full w-full items-center px-5 py-24 [background:radial-gradient(125%_125%_at_50%_10%,#000_40%,#1F51FF_100%)]"></div>
 
 
-                <div className=" mycontainer">
-                    <h1 className='text-4xl text-white font-bold text-center'>
+                <div className="p-2 md:p-0 md:container md:max-w-screen-lg md:px-10 md:py-20 md:mx-auto">
+                    <h1 className='text-4xl  mt-15  md:mt-4 text-white font-bold text-center'>
                         <span className='text-[#1F51FF]'>&lt;</span>
                         Cypher
                         <span className='text-[#1F51FF]'>X/&gt;</span>
                     </h1>
                     <p className='text-white text-lg text-center mt-4'>Forget Password? We've Got You Covered!</p>
-                    <div className='text-white flex flex-col p-4 text-white gap-6 mt-10 items-center'>
+                    <div className='text-white flex flex-col p-4  gap-6 mt-10 items-center'>
                         <input value={form.sitename} onChange={handleInputChange} placeholder='Enter Website URL' className='  rounded-full border border-white w-full py-1 px-4' type="text" name='sitename' id='sitename' />
                         <div className="flex w-full gap-8 mt-4">
                             <input value={form.username} onChange={handleInputChange} placeholder='Enter Username' className='  rounded-full border border-white w-full py-1 px-4' type="text" name='username' id='username' />
@@ -193,85 +207,84 @@ const Manager = () => {  // Manager component is Landing page
                         <h2 className='font-bold text-2xl mt-10'>Your Passwords</h2>
                         {passwordArray.length === 0 && <div className='mt-4'>No Passwords Stored Yet</div>}
 
-                        {passwordArray.length != 0 && <table className="table-auto mt-10 w-full border rounded-xl overflow-hidden">
-                            <thead className='bg-black text-white'>
-                                <tr>
-                                    <th className='py-2'>Site</th>
-                                    <th className='py-2'>Username</th>
-                                    <th className='py-2 text-[#1F51FF]'>Password</th>
-                                    <th className='py-2'>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody className='text-white bg-gray-900'>
-                                {passwordArray.map((item) => {
-                                    return <>
-                                        <tr >
-                                            <td className='py-2 border border-black text-center'>
-                                                <div className='flex items-center justify-center'>
-                                                    <a href={item.sitename} target='_blank'>{item.sitename}</a>
-                                                    <div className='lordiconcopy ml-4 size-7 cursor-pointer' onClick={()=> copyText(item.sitename)}>
-                                                    <lord-icon
-                                                        src="https://cdn.lordicon.com/iykgtsbt.json"
-                                                        trigger="hover"
-                                                        colors="primary:#ffffff"
-                                                        >
-                                                    </lord-icon>
-                                                    </div>
-                                                </div>
-                                                
-                                            </td>
-                                            <td className=' py-2 border border-black text-center'>
-                                                <div className='flex items-center justify-center'>
-                                                        <span>{item.username}</span>
-                                                        <div className='lordiconcopy ml-4 size-7 cursor-pointer' onClick={()=> copyText(item.username)}>
-                                                        <lord-icon
-                                                            src="https://cdn.lordicon.com/iykgtsbt.json"
-                                                            trigger="hover"
-                                                            colors="primary:#ffffff"
-                                                            >
-                                                        </lord-icon>
-                                                        </div>
-                                                    </div>
-                                            </td>
-                                            <td className='py-2 border border-black text-center text-[#1F51FF]'>
-                                            <div className='flex items-center justify-center'>
-                                                        <span>{item.password}</span>
-                                                        <div className='lordiconcopy ml-4 size-7 cursor-pointer' onClick={()=> copyText(item.password)}>
-                                                        <lord-icon
-                                                            src="https://cdn.lordicon.com/iykgtsbt.json"
-                                                            trigger="hover"
-                                                            colors="primary:#ffffff"
-                                                            >
-                                                        </lord-icon>
-                                                        </div>
-                                                    </div>
-                                            </td>
-                                            <td className='py-2 border border-black text-center text-white'>
-                                            <span onClick={() => editPassword(item.id)} className='cursor-pointer ml-2 mr-2'>
-                                                <lord-icon
-                                                    src="https://cdn.lordicon.com/gwlusjdu.json"
-                                                    trigger="hover"
-                                                    colors="primary:#ffffff"
-                                                    className='size-7 pt-1'
-                                                    >
-                                                </lord-icon>
-                                            </span>
-                                            <span onClick={() => deletePassword(item.id)} className='cursor-pointer ml-2 mr-2'>
-                                                <lord-icon
-                                                    src="https://cdn.lordicon.com/skkahier.json"
-                                                    trigger="hover"
-                                                    colors="primary:#ffffff"
-                                                    className='size-7 pt-1'
-                                                    >
-                                                </lord-icon>
-                                            </span>
-                                            </td>
+                        {passwordArray.length != 0 && 
+                            <div className="overflow-x-auto mt-10">
+                                <table className="table-auto w-full pb-4 border rounded-xl overflow-hidden">
+                                    <thead className='bg-black text-white'>
+                                        <tr>
+                                            <th className='py-2 px-2'>Site</th>
+                                            <th className='py-2 px-2'>Username</th>
+                                            <th className='py-2 px-2 text-[#1F51FF]'>Password</th>
+                                            <th className='py-2 px-2'>Actions</th>
                                         </tr>
-                                    </>
-                                })}
-
-                            </tbody>
-                        </table>}
+                                    </thead>
+                                    <tbody className='text-white bg-gray-900'>
+                                        {passwordArray.map((item) => (
+                                            <tr key={item.id}>
+                                                <td className='py-2 px-2 border border-black text-center'>
+                                                    <div className='flex flex-wrap items-center justify-center'>
+                                                        <a href={item.sitename} target='_blank' className="truncate max-w-[90px] sm:max-w-none hover:underline">
+                                                            {item.sitename}
+                                                        </a>
+                                                        <div className='lordiconcopy ml-2 size-6 cursor-pointer' onClick={()=> copyText(item.sitename)}>
+                                                            <lord-icon
+                                                                src="https://cdn.lordicon.com/iykgtsbt.json"
+                                                                trigger="hover"
+                                                                colors="primary:#ffffff">
+                                                            </lord-icon>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td className='py-2 px-2 border border-black text-center'>
+                                                    <div className='flex flex-wrap items-center justify-center'>
+                                                        <span className="truncate max-w-[80px] sm:max-w-none">{item.username}</span>
+                                                        <div className='lordiconcopy ml-2 size-6 cursor-pointer' onClick={()=> copyText(item.username)}>
+                                                            <lord-icon
+                                                                src="https://cdn.lordicon.com/iykgtsbt.json"
+                                                                trigger="hover"
+                                                                colors="primary:#ffffff">
+                                                            </lord-icon>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td className='py-2 px-2 border border-black text-center text-[#1F51FF]'>
+                                                    <div className='flex flex-wrap items-center justify-center'>
+                                                        <span className="truncate max-w-[80px] sm:max-w-none">{item.password}</span>
+                                                        <div className='lordiconcopy ml-2 size-6 cursor-pointer' onClick={()=> copyText(item.password)}>
+                                                            <lord-icon
+                                                                src="https://cdn.lordicon.com/iykgtsbt.json"
+                                                                trigger="hover"
+                                                                colors="primary:#ffffff">
+                                                            </lord-icon>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td className='py-2 px-2 border border-black text-center text-white'>
+                                                    <div className="flex flex-wrap justify-center">
+                                                        <span onClick={() => editPassword(item.id)} className='cursor-pointer mx-1'>
+                                                            <lord-icon
+                                                                src="https://cdn.lordicon.com/gwlusjdu.json"
+                                                                trigger="hover"
+                                                                colors="primary:#ffffff"
+                                                                className='size-6'>
+                                                            </lord-icon>
+                                                        </span>
+                                                        <span onClick={() => deletePassword(item.id)} className='cursor-pointer mx-1'>
+                                                            <lord-icon
+                                                                src="https://cdn.lordicon.com/skkahier.json"
+                                                                trigger="hover"
+                                                                colors="primary:#ffffff"
+                                                                className='size-6'>
+                                                            </lord-icon>
+                                                        </span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
                     </div>
 
 
