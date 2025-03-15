@@ -17,15 +17,19 @@ const Manager = () => {  // Manager component is Landing page
     // state variable for passwordArray 
     const [passwordArray, setPasswordArray] = useState([]);
 
+    const getPassword = async () => {
+        let request = await fetch("http://localhost:3000/");
+        let passwords = await request.json();
+        setPasswordArray(passwords);
+        console.log(passwords);
+    }
 
 
     // useEffect hook to get passwords from local storage and store it in passwordArray
     useEffect(() => {
-        let passwords = localStorage.getItem("passwords");
-        let passwordArray;
-        if (passwords) {
-            setPasswordArray(JSON.parse(passwords));
-        }
+        // let passwords = localStorage.getItem("passwords");
+        getPassword()
+        
     }, []) // empty dependency array - it will run only once when the component mounts
 
 
@@ -39,9 +43,20 @@ const Manager = () => {  // Manager component is Landing page
 
     }
 
-    const savePassword = () => {
+    const savePassword =  async () => {
         if(form.sitename.length > 3 && form.username.length > 3 && form.password.length > 3){
-        toast.success('Password Secured!', {
+        
+        // if any such id exits delete it 
+        await fetch("http://localhost:3000/", {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ id: form.id})
+        })
+        
+        
+            toast.success('Password Secured!', {
             position: "top-right",
             autoClose: 3000,
             hideProgressBar: false,
@@ -53,7 +68,16 @@ const Manager = () => {  // Manager component is Landing page
             });
         console.log(form);
         setPasswordArray([...passwordArray, {...form, id: uuidv4()}]); // add form data to passwordArray
-        localStorage.setItem("passwords", JSON.stringify([...passwordArray, {...form, id: uuidv4()}])); // store passwordArray in local storage
+        // saving password through api
+        await fetch("http://localhost:3000/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({...form, id: uuidv4()})
+        })
+
+        // localStorage.setItem("passwords", JSON.stringify([...passwordArray, {...form, id: uuidv4()}])); // store passwordArray in local storage
         // we are using [...passwordArray, form] instead of passwordArray
         //  because it takes time for setStateVaribel function to reflect its changes in react.
         setForm({
@@ -80,7 +104,7 @@ const Manager = () => {  // Manager component is Landing page
 
 
     // event handler for delete password 
-    const deletePassword = (id) => {
+    const deletePassword = async (id) => {
         toast.error('Password Deleted', {
             position: "top-right",
             autoClose: 5000,
@@ -95,7 +119,17 @@ const Manager = () => {  // Manager component is Landing page
         if(confirm_popup){
             let filteredArray = passwordArray.filter(item => item.id !== id); // remove password from passwordArray
             setPasswordArray(filteredArray); // update state
-            localStorage.setItem("passwords", JSON.stringify(filteredArray)); // store updated passwordArray in local storage
+
+            // deleting password through api 
+            let res = await fetch("http://localhost:3000/", {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ id: id})
+            })
+
+            // localStorage.setItem("passwords", JSON.stringify(filteredArray)); // store updated passwordArray in local storage
         }
         
     }
@@ -105,10 +139,12 @@ const Manager = () => {  // Manager component is Landing page
     const editPassword = (id) => {
         let targetPassword = passwordArray.find(item => item.id === id); // get password from passwordArray
     setForm({
+        id: targetPassword.id,
         sitename: targetPassword.sitename,
         username: targetPassword.username,
         password: targetPassword.password
     });
+
     let filteredArray = passwordArray.filter(item => item.id !== id); // remove password from passwordArray
     setPasswordArray(filteredArray); // update state and wait for user to press save button
     }
@@ -249,7 +285,7 @@ const Manager = () => {  // Manager component is Landing page
                                                 </td>
                                                 <td className='py-2 px-2 border border-black text-center text-[#1F51FF]'>
                                                     <div className='flex flex-wrap items-center justify-center'>
-                                                        <span className="truncate max-w-[80px] sm:max-w-none">{item.password}</span>
+                                                        <span className="truncate max-w-[80px] sm:max-w-none">{"*".repeat(item.password.length)}</span>
                                                         <div className='lordiconcopy ml-2 size-6 cursor-pointer' onClick={()=> copyText(item.password)}>
                                                             <lord-icon
                                                                 src="https://cdn.lordicon.com/iykgtsbt.json"
