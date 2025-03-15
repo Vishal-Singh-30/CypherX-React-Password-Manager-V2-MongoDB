@@ -2,6 +2,7 @@
 
 CypherX is a state-of-the-art password manager designed to keep your credentials secure and easily accessible. With a sleek and intuitive interface, CypherX ensures that you never have to worry about forgetting your passwords again.
 
+**[Live Demo](https://cypherx-by-vs.netlify.app/)**
 
 ![CypherX Screenshot 1](cx_pic_1.png)
 ![CypherX Screenshot 2](cx_pic_2.png)
