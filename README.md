@@ -4,9 +4,22 @@ CypherX is a state-of-the-art password manager designed to keep your credentials
 
 **[Live Demo](https://cypherx-by-vs.netlify.app/)**
 
-![CypherX Screenshot 1](cx_pic_1.png)
-![CypherX Screenshot 2](cx_pic_2.png)
-![CypherX Screenshot 3](cx_pic_3.png)
+## Web-Based Design
+
+<p align="center">
+  <img src="cx_pic_1.png" alt="CypherX Screenshot 1" width="100%">
+  <img src="cx_pic_2.png" alt="CypherX Screenshot 2" width="50%">
+  <img src="cx_pic_3.png" alt="CypherX Screenshot 3" width="50%">
+</p>
+
+<!-- screen shots of mobile design -->
+
+## Mobile-Friendly Design
+
+<p align="center">
+  <img src="cx_pic_4.png" alt="CypherX Screenshot 4" width="45%">
+  <img src="cx_pic_5.png" alt="CypherX Screenshot 5" width="45%">
+</p>
 
 ## Features
 
