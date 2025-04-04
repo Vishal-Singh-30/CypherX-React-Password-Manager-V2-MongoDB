@@ -6,9 +6,7 @@ CypherX is a state-of-the-art password manager designed to keep your credentials
 
 ## Project Showcase (Click on Image to View)
 
-![CypherX Project Showcase Video](/cx_pic_1.png)(https://youtu.be/BS4hkdxhiHg)
-
-
+[![CypherX Project Showcase Video](cx_pic_1.png)](https://youtu.be/BS4hkdxhiHg)
 
 ## Web-Based Design
 
