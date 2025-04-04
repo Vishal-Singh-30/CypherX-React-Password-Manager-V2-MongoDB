@@ -11,7 +11,6 @@ CypherX is a state-of-the-art password manager designed to keep your credentials
 ## Web-Based Design
 
 <p align="center">
-  <img src="cx_pic_1.png" alt="CypherX Screenshot 1" width="100%">
   <img src="cx_pic_2.png" alt="CypherX Screenshot 2" width="50%">
   <img src="cx_pic_3.png" alt="CypherX Screenshot 3" width="50%">
 </p>
